@@ -1,0 +1,57 @@
+class Mahasiswa implements Comparable<Mahasiswa> {
+  String nrp;
+  String nama;
+
+  Mahasiswa(this.nrp, this.nama);
+
+  @override
+  int compareTo(Mahasiswa other) {
+    return nrp.compareTo(other.nrp);
+  }
+
+  @override
+  String toString() {
+    return 'NRP: $nrp, Nama: $nama';
+  }
+}
+
+void selectionSort<T extends Comparable<T>>(List<T> arr) {
+  int n = arr.length;
+  for (int i = 0; i < n - 1; i++) {
+    int minIndex = i;
+    for (int j = i + 1; j < n; j++) {
+      if (arr[j].compareTo(arr[minIndex]) < 0) {
+        minIndex = j;
+      }
+    }
+    T temp = arr[i];
+    arr[i] = arr[minIndex];
+    arr[minIndex] = temp;
+  }
+}
+
+void display(List data) {
+  for (var obj in data) {
+    print(obj);
+  }
+}
+
+void main() {
+  List<Mahasiswa> daftarMahasiswa = [
+    Mahasiswa("02", "Yasmin"),
+    Mahasiswa("01", "Fatimah"),
+    Mahasiswa("04", "fahri"),
+    Mahasiswa("03", "Candra")
+  ];
+
+  print("Sebelum Sorting:");
+  display(daftarMahasiswa);
+
+  var startTime = DateTime.now();
+  selectionSort(daftarMahasiswa);
+  var elapsedTime = DateTime.now().difference(startTime);
+
+  print("\nSetelah Sorting:");
+  display(daftarMahasiswa);
+  print("Waktu: ${elapsedTime.inMilliseconds} ms");
+}
