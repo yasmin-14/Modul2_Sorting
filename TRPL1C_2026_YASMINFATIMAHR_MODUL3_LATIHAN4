@@ -1,0 +1,126 @@
+import 'dart:core';
+
+class Mahasiswa implements Comparable<Mahasiswa> {
+  String nrp;
+  String nama;
+
+  Mahasiswa(this.nrp, this.nama);
+
+  @override
+  int compareTo(Mahasiswa other) {
+    return nrp.compareTo(other.nrp); // Urutkan berdasarkan NRP
+  }
+
+  @override
+  String toString() {
+    return 'NRP: $nrp, Nama: $nama';
+  }
+}
+
+// Implementasi QuickSort
+void quickSort(List<Mahasiswa> list, int low, int high) {
+  if (low < high) {
+    int pivotIndex = partition(list, low, high);
+    quickSort(list, low, pivotIndex - 1);
+    quickSort(list, pivotIndex + 1, high);
+  }
+}
+
+int partition(List<Mahasiswa> list, int low, int high) {
+  Mahasiswa pivot = list[high];
+  int i = low - 1;
+
+  for (int j = low; j < high; j++) {
+    if (list[j].compareTo(pivot) < 0) {
+      i++;
+      Mahasiswa temp = list[i];
+      list[i] = list[j];
+      list[j] = temp;
+    }
+  }
+
+  Mahasiswa temp = list[i + 1];
+  list[i + 1] = list[high];
+  list[high] = temp;
+
+  return i + 1;
+}
+
+// Implementasi MergeSort
+void mergeSort(List<Mahasiswa> list) {
+  if (list.length <= 1) return;
+
+  int mid = list.length ~/ 2;
+  List<Mahasiswa> left = list.sublist(0, mid);
+  List<Mahasiswa> right = list.sublist(mid);
+
+  mergeSort(left);
+  mergeSort(right);
+  merge(list, left, right);
+}
+
+void merge(List<Mahasiswa> list, List<Mahasiswa> left, List<Mahasiswa> right) {
+  int i = 0, j = 0, k = 0;
+
+  while (i < left.length && j < right.length) {
+    if (left[i].compareTo(right[j]) < 0) {
+      list[k] = left[i];
+      i++;
+    } else {
+      list[k] = right[j];
+      j++;
+    }
+    k++;
+  }
+
+  while (i < left.length) {
+    list[k] = left[i];
+    i++;
+    k++;
+  }
+
+  while (j < right.length) {
+    list[k] = right[j];
+    j++;
+    k++;
+  }
+}
+
+// Fungsi untuk menampilkan daftar mahasiswa
+void tampilkan(List<Mahasiswa> data) {
+  for (var mhs in data) {
+    print(mhs);
+  }
+}
+
+void main() {
+  List<Mahasiswa> mahasiswaList = [
+    Mahasiswa("02", "Cahyani"),
+    Mahasiswa("01", "Reva"),
+    Mahasiswa("04", "Aprillia"),
+    Mahasiswa("03", "Maheswara"),
+  ];
+
+  print("Data sebelum sorting:");
+  tampilkan(mahasiswaList);
+
+  // QuickSort
+  List<Mahasiswa> quickSorted = List.from(mahasiswaList);
+  DateTime startQuick = DateTime.now();
+  quickSort(quickSorted, 0, quickSorted.length - 1);
+  Duration quickTime = DateTime.now().difference(startQuick);
+
+  print("\nData setelah QuickSort:");
+  tampilkan(quickSorted);
+  print("Waktu QuickSort: ${quickTime.inMilliseconds} ms");
+
+  // MergeSort
+  List<Mahasiswa> mergeSorted = List.from(mahasiswaList);
+  DateTime startMerge = DateTime.now();
+  mergeSort(mergeSorted);
+  Duration mergeTime = DateTime.now().difference(startMerge);
+
+  print("\nData setelah MergeSort:");
+  tampilkan(mergeSorted);
+  print("Waktu MergeSort: ${mergeTime.inMilliseconds} ms");
+}
