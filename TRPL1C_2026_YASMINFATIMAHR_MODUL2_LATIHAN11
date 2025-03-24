@@ -1,0 +1,58 @@
+class Mahasiswa implements Comparable<Mahasiswa> {
+  String nrp;
+  String nama;
+
+  Mahasiswa(this.nrp, this.nama);
+
+  @override
+  int compareTo(Mahasiswa other) {
+    return nrp.compareTo(other.nrp);
+  }
+
+  @override
+  String toString() {
+    return 'NRP: $nrp, Nama: $nama';
+  }
+}
+
+class Latihan {
+  static void bubbleSort<T extends Comparable<T>>(List<T> arr) {
+    int n = arr.length;
+    for (int i = 0; i < n - 1; i++) {
+      for (int j = 0; j < n - i - 1; j++) {
+        if (arr[j].compareTo(arr[j + 1]) > 0) {
+          // Tukar posisi jika elemen lebih besar
+          T temp = arr[j];
+          arr[j] = arr[j + 1];
+          arr[j + 1] = temp;
+        }
+      }
+    }
+  }
+
+  static void display<T>(List<T> data) {
+    for (var item in data) {
+      print(item);
+    }
+  }
+}
+
+void main() {
+  List<Mahasiswa> arr8 = [
+    Mahasiswa("02", "Fatimah"),
+    Mahasiswa("01", "Yasmin"),
+    Mahasiswa("04", "Fahri"),
+    Mahasiswa("03", "Cikal"),
+  ];
+
+  print("Data Sebelum Pengurutan:");
+  Latihan.display(arr8);
+
+  DateTime start = DateTime.now();
+  Latihan.bubbleSort(arr8);
+  Duration elapsedTime = DateTime.now().difference(start);
+
+  print("\nData Setelah Pengurutan:");
+  Latihan.display(arr8);
+  print("\nWaktu: ${elapsedTime.inMilliseconds} ms");
+}
